@@ -1,4 +1,3 @@
-
 :root {
     --text-black: #000000DE
 }
@@ -10,13 +9,17 @@
     box-sizing: border-box;
 }
 
+h1 {
+    font-size: 24px !important;
+}
+
 a {
-    text-decoration: none;
-    color: #000;
+    text-decoration: none !important;
+    color: #000 !important;
 }
 
 li {
-    list-style: none;
+    list-style: none !important;
 }
 
 .top_gnb {

@@ -14,6 +14,10 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data.success) {
                         idCheck = true;
+                        alert("생성 가능한 ID 입니다")
+                    }
+                    else {
+                        alert("중복된 ID 입니다")
                     }
                 }
             });
