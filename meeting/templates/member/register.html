@@ -1,49 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="/static/register.js"></script>
+    {% include 'includes/head.html' %}
     <title>회원가입</title>
+    <link rel="stylesheet" href="/static/css/member.css">
 </head>
 <body>
-    <div>
-        <div>
-            <h2>회원가입</h2>
-        </div>
-        <hr>
-        <div>
-            <form action="/api/register" method="post" id="registerForm">
-                <div>
-                    <span>아이디</span>
-                    <input type="text" name="id" id="id" placeholder="아이디">
-                    <input type="button" value="중복확인" id="idCheckBtn">
+    {% include 'includes/header.html' %}
+    <!-- section -->
+    <section id="memberForm">
+        <div id="section">
+            <form action="/api/register" method="post" id="registerForm" name="registerForm">
+                <div id="first">
+                    <div id="register_title">회원가입</div>
+                    <div id="pilSu">
+                        <span class="ico">*</span>필수입력사항
+                    </div>
                 </div>
-                <div>
-                    <span>비밀번호</span>
-                    <input type="text" name="password" id="password" placeholder="비밀번호">
+                <div id="second">
+                    <table class="member_table">
+                        <tr>
+                            <th>아이디<span class="ico">*</span></th>
+                            <td><input type="text" class="longText" id="id" name="id" placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합">
+                            </td>
+                            <td><input type="button" id="idCheckBtn" class="bnt_size bnt_color" value="중복확인" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>비밀번호<span class="ico">*</span></th>
+                            <td><input type="password" class="longText" name="password" placeholder="비밀번호를 입력해주세요"></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <span id="pw_icon">✖️</span>
+                                <span id="pw_msg">10자 이상 입력</span>
+                                <br> 
+                                <span id="pw_icon_two">✖️</span>
+                                <span id="pw_msg_two">영문/숫자/특수문자(공백제외)만 허용하며, 1개 이상 조합</span>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>비밀번호확인<span class="ico">*</span></th>
+                            <td>
+                                <input type="password" class="longText" name="password_check" placeholder="비밀번호를 한번 더 입력해주세요">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <span id="pw_ck_icon">✖️</span>
+                                <span id="pw_ck_msg">동일한 비밀번호를 입력해주세요</span>
+                                <br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>이름<span class="ico">*</span></th>
+                            <td><input type="text" class="longText" name="nick_name" placeholder="이름을 입력해주세요"></td>
+                        </tr>
+                        <tr>
+                            <th>성별<span class="ico">*</span></th>
+                            <td>
+                                <input type="radio" name="gender" id="male" value="male">
+                                <label for="male">남성</label>
+                                <input type="radio" name="gender" id="female" value="female">
+                                <label for="female">여성</label>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
-                <div>
-                    <span>비밀번호 확인</span>
-                    <input type="text" id="password_check" placeholder="비밀번호 확인">
+
+                <div id="register_btn">
+                    <input type="button" id="registerSubmit" class="btn submit register_input" value="가입하기" />
                 </div>
-                <div>
-                    <span>이름</span>
-                    <input type="text" name="nick_name" id="nick_name" placeholder="이름">
-                </div>
-                <div>
-                    <span>성별</span>
-                    <input type="radio" name="gender" id="male" value="male">
-                    <label for="male">남성</label>
-                    <input type="radio" name="gender" id="female" value="female">
-                    <label for="female">여성</label>
-                </div>
-                <hr>
-                <input type="button" value="회원가입" id="registerSubmit">
             </form>
         </div>
-    </div>
+    </section>
+    <!-- section 끝 -->
+    
+    {% include 'includes/plugin.html' %}
+    <script src="/static/js/register.js"></script>
 </body>
 </html>
