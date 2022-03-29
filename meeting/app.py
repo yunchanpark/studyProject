@@ -9,9 +9,14 @@ db = client.dbMember
 SECRET_KEY = 'HelloFlask'
 
 app = Flask(__name__)
+# 메인페이지
+@app.route('/home')
+def home():
+    return render_template('index.html')
+
 # 로그인
 @app.route('/login')
-def home():
+def login():
     return render_template('member/login.html')
 
 @app.route('/api/login', methods=['POST'])

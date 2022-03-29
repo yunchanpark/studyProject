@@ -1,9 +1,9 @@
 $(document).ready(function () {
-    let idCheck = false
+    let idCheck = false;
     $('#idCheckBtn').on('click', function () {
-        let id = $('#id').val()
+        let id = $('#id').val();
         if (id == '' || id.trim().length == 0){
-            alert('아이디를 입력해주세요')
+            alert('아이디를 입력해주세요');
         } else {
             $.ajax({
                 type: 'POST',
@@ -12,10 +12,8 @@ $(document).ready(function () {
                     'id': id
                 },
                 success: function (data) {
-                    console.log(data)
                     if (data.success) {
-                        console.log(data.success)
-                        idCheck = true
+                        idCheck = true;
                     }
                 }
             });
@@ -24,9 +22,9 @@ $(document).ready(function () {
 
     $('#registerSubmit').on('click', function () {
         if (!idCheck) {
-            alert('중복화인을 해주세요')
+            alert('중복화인을 해주세요');
         } else {
-            $('#registerForm').submit()
+            $('#registerForm').submit();
         }
     });
 });
