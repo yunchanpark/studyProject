@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/static/member.js"></script>
+    <title>회원가입</title>
+</head>
+<body>
+    <div>
+        <div>
+            <h2>회원가입</h2>
+        </div>
+        <hr>
+        <div>
+            <form action="/api/register" method="post" id="registerForm">
+                <div>
+                    <span>아이디</span>
+                    <input type="text" name="id" id="id" placeholder="아이디">
+                    <input type="button" value="중복확인" id="idCheckBtn">
+                </div>
+                <div>
+                    <span>비밀번호</span>
+                    <input type="text" name="password" id="password" placeholder="비밀번호">
+                </div>
+                <div>
+                    <span>비밀번호 확인</span>
+                    <input type="text" id="password_check" placeholder="비밀번호 확인">
+                </div>
+                <div>
+                    <span>이름</span>
+                    <input type="text" name="nick_name" id="nick_name" placeholder="이름">
+                </div>
+                <div>
+                    <span>성별</span>
+                    <input type="radio" name="gender" id="male" value="male">
+                    <label for="male">남성</label>
+                    <input type="radio" name="gender" id="female" value="female">
+                    <label for="female">여성</label>
+                </div>
+                <hr>
+                <input type="button" value="회원가입" id="registerSubmit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
