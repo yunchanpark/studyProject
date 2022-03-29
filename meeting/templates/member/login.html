@@ -4,16 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+    <script src="/static/login.js"></script>
     <title>로그인</title>
 </head>
 <body>
     <div>
         <form action="/api/login" method="post">
             <span>아이디</span>
-            <input type="text" name="id"/>
+            <input type="text" name="id" id="id"/>
             <span>비밀번호</span>
-            <input type="password" name="password"/>
-            <input type="submit" value="로그인">
+            <input type="password" name="password" id="password"/>
+            <input type="button" value="로그인" id="loginBtn">
             <input type="button" value="회원가입">
         </form>
     </div>
