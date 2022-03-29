@@ -1,16 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    {% include 'includes/head.html' %}
+    <title>메인 페이지</title>
 </head>
 <body>
-    {% if request.cookies.get('myToken') is none %}
-    로그인 실패
-    {% else %}
-    로그인 성공
-    {% endif %}
+    {% include 'includes/header.html' %}
+    {% include 'includes/plugin.html' %}
 </body>
 </html>

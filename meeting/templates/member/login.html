@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
-    <script src="/static/login.js"></script>
+    {% include 'includes/head.html' %}
+    <link rel="stylesheet" href="/static/css/member.css">
     <title>로그인</title>
 </head>
 <body>
-    <div>
-        <form action="/api/login" method="post">
-            <span>아이디</span>
-            <input type="text" name="id" id="id"/>
-            <span>비밀번호</span>
-            <input type="password" name="password" id="password"/>
-            <input type="button" value="로그인" id="loginBtn">
-            <input type="button" value="회원가입">
-        </form>
+    {% include 'includes/header.html' %}
+    <div class="wrap">
+        <!-- section -->
+        <section>
+            <form action="/api/login" method="post" class="loginForm">
+                <h2>로그인</h2>
+                <div class="idForm">
+                    <input type="text" id="id" class="id" placeholder="아이디를 입력해주세요" name="id">
+                </div>
+                <div class="passForm">
+                    <input type="password" id="password" class="pw" placeholder="비밀번호를 입력해주세요" name="password">
+                </div>
+                <input type="button" class="btn" id="loginBtn" value="로그인">
+                <a href="/register"><button type="button" class="btn1">회원가입</button></a>
+            </form>
+        </section>
+        <!-- section 끝 -->
     </div>
+    {% include 'includes/plugin.html' %}
+    <script src="/static/js/login.js"></script>
 </body>
 </html>

@@ -24,7 +24,19 @@ $(document).ready(function () {
         if (!idCheck) {
             alert('중복화인을 해주세요');
         } else {
-            $('#registerForm').submit();
+            let registerForm = $('form[name=registerForm]').serialize();
+            $.ajax({
+                type: 'post',
+                url: 'api/register',
+                dataType: 'json',
+                data: registerForm,
+                success: function(data) {
+                    if(data.success) {
+                        alert(data.msg)
+                        window.location.href = '/login'
+                    }
+                }
+            })
         }
     });
 });
