@@ -9,110 +9,69 @@
 <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css"> -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css" />
+{% include 'includes/plugin.html' %}
 </head>
 
 <body>
     {% include 'includes/header.html' %}
     <div class="wrap">
         <div id="card-list" class="card-columns">
+            {% for item in articles %}
+            <div class="card" id="{{item._id}}">
+                <div class="card-body card-body{{item._id}}">
+                    <h4 class="card-title">{{item.title}}</h4>
+                    <p class="card-text">{{item.intro}}</p>
+                </div>
+            </div>
+            <script>
+                var token = $.cookie('myToken')
+                var uId = "{{item.uId}}"
+                token = JSON.parse(atob(token.split('.')[1]))
+                if (token.id == uId) {
+                    let temp_html = `
+                        <a href="/api/edit?postId_give={{item._id}}"><button type="button"
+                                class="btn btn-secondary">수정</button></a>
+                        <button type="button" class="btn btn-dark" onclick="deleteArticle('{{item._id}}')">삭제</button>
+                        `;
+                    $(`.card-body{{item._id}}`).append(temp_html);
+                }
+            </script>
+            {% endfor %}
+            <script>
+                function deleteArticle(_id) {
+                    $.ajax({
+                        type: "POST",
+                        url: "/api/delete",
+                        data: {
+                            postId_give: _id,
+                            token: $.cookie('myToken')
+                        },
+                        success: function (response) {
+                            if (response['result'] == 'success') {
+                                // 2. '삭제 완료!' 얼럿을 띄웁니다.
+                                alert('모임이 취소되었습니다!')
+                                // 3. 변경된 정보를 반영하기 위해 새로고침합니다.
+                                window.location.reload()
+                            }
+                        }
+                    });
+                }
+
+                function goCreate() {
+                    var token = $.cookie('myToken');
+                    if (token !== undefined) {
+                        location.replace("/create")
+                    } else {
+                        alert("로그인이 필요합니다!")
+                    }
+                }
+            </script>
         </div>
     </div>
     <div class="createmoim">
         <!-- <button type = "button" class= "btn btn-primary" onclick="goCreate()">모임만들기</button> -->
         <i onclick="goCreate()" class="bi bi-plus-circle-fill fs-1" fill="currentColor"></i>
     </div>
-    {% include 'includes/plugin.html' %}
-    <script>
-        $(document).ready(function () {
-            $("#card-list").html("");
-            showArticles();
-        });
-
-        function editArticles(_id) {
-            $.ajax({
-                type: "POST",
-                url: "/api/edit",
-                data: {
-                    postId_give: _id
-                },
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        // 2. '삭제 완료!' 얼럿을 띄웁니다.
-                        alert('모임이 취소되었습니다!')
-                        // 3. 변경된 정보를 반영하기 위해 새로고침합니다.
-                        window.location.reload()
-                    }
-                }
-            });
-        }
-
-        function showArticles() {
-            $.ajax({
-                type: "GET",
-                url: "/api/create",
-                data: {},
-                success: function (response) {
-                    let articles = response["articles"];
-                    for (let i = 0; i < articles.length; i++) {
-                        makeCard(articles[i]["_id"], articles[i]["title"], articles[i]["intro"], articles[i]
-                            ["uId"])
-                    }
-                }
-            })
-        }
-
-        function makeCard(_id, title, intro, uId) {
-            let token = $.cookie('myToken')
-
-            let temp_html = `<div class="card" id="${_id}">
-                <div class="card-body card-body${_id}">
-                    <h4 class="card-title">${title}</h4>
-                    <p class="card-text">${intro}</p>
-                </div>
-            </div>`;
-            $("#card-list").append(temp_html);
-
-            if (token !== undefined) {
-                token = JSON.parse(atob(token.split('.')[1]))
-                if (token.id == uId) {
-                    let temp_html = `
-                        <button type="button" class="btn btn-secondary" onclick="editArticle('${_id}, ${title}', '${intro}')">수정</button>
-                        <button type="button" class="btn btn-dark" onclick="deleteArticle('${_id}')">삭제</button>
-                    `;
-                    $(`.card-body${_id}`).append(temp_html);
-                } 
-            }
-        }
-
-        function deleteArticle(_id) {
-            $.ajax({
-                type: "POST",
-                url: "/api/delete",
-                data: {
-                    postId_give: _id,
-                    token: $.cookie('myToken')
-                },
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        // 2. '삭제 완료!' 얼럿을 띄웁니다.
-                        alert('모임이 취소되었습니다!')
-                        // 3. 변경된 정보를 반영하기 위해 새로고침합니다.
-                        window.location.reload()
-                    }
-                }
-            });
-        }
-
-        function goCreate() {
-            let token = $.cookie('myToken');
-            console.log(token)
-            if (token !== undefined) {
-                location.replace("/create")
-            } else {
-                alert("로그인이 필요합니다!")
-            }
-        }
-    </script>
 </body>
 
 </html>

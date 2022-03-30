@@ -18,7 +18,8 @@ app = Flask(__name__)
 
 @app.route('/home')
 def home():
-    return render_template('index.html')
+    articles = dbpost.articles.find()
+    return render_template('index.html', articles=articles)
 
 # 로그인
 
@@ -129,22 +130,11 @@ def read_articles():
     return jsonify({'result': 'success', 'articles': result})
 
 
-@app.route('/api/edit', methods=['POST'])
+@app.route('/api/edit', methods=['GET'])
 def post_edited_article():
-    # 1. 클라이언트로부터 데이터를 받기
-    postId_receive = request.form['postId_give']
-    new_title_receive = request.form['new_title_give']
-    new_intro_receive = request.form['new_intro_give']
-    new_people_receive = request.form['new_people_give']
-    new_sdate_receive = request.form['new_sdate_give']
-    new_edate_receive = request.form['new_edate_give']
-    new_fplace_receive = request.form['new_fplace_give']
-    new_splace_receive = request.form['new_splace_give']
-    new_desc_receive = request.form['new_desc_give']
-    dbpost.articles.update_one({'_id': ObjectId(postId_receive)}, {
-                               '$set': {'title': newTitle_receive, 'content': newContent_receive}})
-
-    return jsonify({'result': 'success'})
+    postId_receive = request.args.get('postId_give')
+    article = dbpost.articles.find_one({'_id': ObjectId(postId_receive)})
+    return render_template('broad/edit.html', article = article)
 
 
 @app.route('/api/delete', methods=['POST'])
@@ -153,7 +143,8 @@ def delete_article():
         postId_receive = request.form['postId_give']
         token = request.form['token']
         uid = jwt.decode(token, SECRET_KEY, algorithms='HS256')
-        dbpost.articles.delete_many({'_id': ObjectId(postId_receive), 'uId': uid['id']})
+        dbpost.articles.delete_many(
+            {'_id': ObjectId(postId_receive), 'uId': uid['id']})
         # 3. 성공하면 success 메시지를 반환합니다.
         return jsonify({'result': 'success'})
     except jwt.ExpiredSignatureError:

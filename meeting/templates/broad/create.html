@@ -82,9 +82,7 @@
 
         function postArticle() {
             // 1. 유저가 입력한 데이터를 #memo-title과 #memo-content에서 가져오기
-            
             let userId = $.cookie('myToken');
-            console.log(userId)
             let title = $("#studyName").val();
             let intro = $("#studyIntro").val();
             let people = $("#headCount").val();
@@ -94,7 +92,6 @@
             let splace = $("#secondPlace").val();
             let desc = $("#studyDesc").val();
             // 2. memo에 POST 방식으로 메모 생성 요청하기
-            console.log(1)
             $.ajax({
                 type: "POST", // POST 방식으로 요청하겠다.
                 url: "/api/create", // /memo라는 url에 요청하겠다.
@@ -119,10 +116,6 @@
                     }
                 }
             })
-        }
-
-        function goMain() {
-            location.replace("/home")
         }
     </script>
 </body>
