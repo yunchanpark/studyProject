@@ -93,6 +93,7 @@
             let fplace = $("#firstPlace").val();
             let splace = $("#secondPlace").val();
             let desc = $("#studyDesc").val();
+            let count = 0
             var formData = $('#createForm').serialize()
 
             console.log(formData)
@@ -109,7 +110,8 @@
                     edate_give: edate,
                     fplace_give: fplace,
                     splace_give: splace,
-                    desc_give: desc
+                    desc_give: desc,
+                    count_give: count
                 }, // 데이터를 주는 방법
                 success: function (response) { // 성공하면
                     console.log(response)

@@ -103,10 +103,12 @@ def create_article():
     fplace_receive = request.form['fplace_give']
     splace_receive = request.form['splace_give']
     desc_receive = request.form['desc_give']
+    count_receive = request.form['count_give']
 
     article = {'uId': uid['id'], 'title': title_receive, 'intro': intro_receive, 'people': people_receive,
                 'sdate': sdate_receive, 'edate': edate_receive, 'fplace': fplace_receive,
-                'splace': splace_receive, 'desc': desc_receive}
+                'splace': splace_receive, 'desc': desc_receive, 'count': count_receive
+                }
 
     # 3. mongoDB에 데이터를 넣기
     dbPost.articles.insert_one(article)
@@ -160,6 +162,16 @@ def delete_article():
         # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+@app.route('/api/join', methods=['POST'])
+def join():
+    postId_receive = request.form['postId_give']
+    uId_receive = request.form['uId_give']
+    uid = jwt.decode(uId_receive, SECRET_KEY, algorithms='HS256')
+
+    dbPost.articles.update_one({'_id': ObjectId(postId_receive), 'uId': uid['id']}, {"$set": {'count' +=}})
+
+    return jsonify({'result': 'success'})
 
 if __name__ == '__main__':
     app.run(debug=True)
