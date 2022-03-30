@@ -15,7 +15,7 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data.success) {
                         $.cookie('myToken', data.token);
-                        window.location.href = '/home';
+                        window.location.href = '/';
                     } else {
                         alert(data.msg);
                     }

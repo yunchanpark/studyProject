@@ -11,10 +11,10 @@ function logout() {
         path: '/'
     });
     location.reload();
-    window.location.href = '/home'
+    window.location.href = '/'
     alert('로그아웃 하셨습니다!')
 }
 
 function goMain() {
-    location.replace("/home")
+    location.replace("/")
 }

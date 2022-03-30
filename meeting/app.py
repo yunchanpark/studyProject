@@ -4,7 +4,7 @@ import hashlib
 import datetime
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-client = MongoClient('localhost', 27017)
+client = MongoClient('mongodb://jungleboy:minipjt1@3.38.165.132', 27017)
 db = client.dbMember
 dbPost = client.dbPost
 dbLike = client.dbLike
@@ -16,7 +16,7 @@ SECRET_KEY = 'HelloFlask'
 app = Flask(__name__)
 
 # 메인페이지
-@app.route('/home')
+@app.route('/')
 def home():
     articles = dbPost.articles.find()
     return render_template('index.html', articles=articles)
@@ -41,7 +41,7 @@ def api_login():
             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60 * 60 * 24),
             'name': result['name']
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
+        token = jwt.encode(payload, SECRET_KEY, algorithm='HS256').decode('utf-8')
 
         return jsonify({'success': True, 'token': token})
     else:
@@ -158,7 +158,7 @@ def update_article():
     fplace_receive = request.form['fplace_give']
     desc_receive = request.form['desc_give']
 
-    article = {'title': title_receive, 'image': image_receive, 'intro': intro_receive, 'people': people_receive,
+    article = {'title': title_receive, 'url': image_receive, 'intro': intro_receive, 'people': people_receive,
                 'sdate': sdate_receive, 'edate': edate_receive, 'fplace': fplace_receive, 'desc': desc_receive}
     print(article)
     # 3. mongoDB에 데이터를 넣기
@@ -249,4 +249,4 @@ def like():
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run('0.0.0.0', port=5000, debug=True)
