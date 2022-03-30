@@ -75,7 +75,7 @@ def api_register():
 
 @app.route('/create')
 def create():
-   return render_template('broad/create.html')
+    return render_template('broad/create.html')
 
 @app.route('/api/create', methods=['POST'])
 def create_article():
@@ -90,7 +90,7 @@ def create_article():
     desc_receive = request.form['desc_give']
 
     article = {'title': title_receive, 'intro': intro_receive, 'people': people_receive, 'sdate': sdate_receive, 'edate': edate_receive, 'fpalce': fplace_receive, 'splace': splace_receive, 'desc': desc_receive}
-   
+    
     # 3. mongoDB에 데이터를 넣기
     dbpost.articles.insert_one(article)
 
