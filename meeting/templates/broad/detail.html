@@ -1,68 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {% include 'includes/head.html' %}
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>상세 페이지</title>
-    <style type="text/css">
-        .wrap {
-            margin: 120px auto;
-        }  
-    </style>
-    <!-- jquery -->
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
-    <!-- Bootstrap CSS-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+{% include 'includes/head.html' %}
+<link rel="stylesheet" href="/static/css/detail.css">
+<!-- jquery -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js"></script>
+<!-- Bootstrap CSS-->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<title>상세 페이지</title>
 </head>
+
 <body>
-    {% include 'includes/header.html' %}
-    <div class="wrap">{{article}}</div>
-    {% include 'includes/plugin.html'%}
-    <script>
-        function join(_id) {
-            let status = $('#join').val()
-            if (status == '참여하기') {
-                $.ajax({
-                    type: "POST",
-                    url: "api/join",
-                    data: {
-                        postId_give: _id,
-                        token: $.cookie('myToken')
-                    },
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        alert('참여완료!')
-                        $('#join').val('참여중')
-                        window.location.reload()
-                    }
-                }
-                });
-            } else {
-                $.ajax({
-                    type: "POST",
-                    url: "api/notJoin",
-                    data: {
-                        postId_give: _id,
-                        token: $.cookie('myToken')
-                    },
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        alert('참여취소!')
-                        $('#join').val('참여하기')
-                        window.location.reload()
-                    }
-                }
-            });
-            }
-        }
-    </script>
+    <div class="wrap">
+        {% include 'includes/header.html' %}
+        {{article}}
+        <br>
+        <input type="button" name="" id="likeBtn" value="좋아요" onclick="likeBtn('{{article._id}}')">
         {% if article.people|int > article.count|int %}
-            <input id="join" class= "btn btn-primary" type="button" onclick="join()" value="참여하기">
+        <input id="join" class= "btn btn-primary" type="button" onclick="join()" value="참여하기">
         {% else %}
-            <input id="join" class= "btn btn-secondary" disabled type="button" value="인원 마감">
+        <input id="join" class= "btn btn-secondary" disabled type="button" value="인원 마감">
         {% endif %}
+        {% include 'includes/plugin.html'%}
+        <script src="/static/js/detail.js"></script>
+        <script>
+            function join(_id) {
+                let status = $('#join').val()
+                if (status == '참여하기') {
+                    $.ajax({
+                        type: "POST",
+                        url: "api/join",
+                        data: {
+                            postId_give: _id,
+                            token: $.cookie('myToken')
+                        },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert('참여완료!')
+                            $('#join').val('참여중')
+                            window.location.reload()
+                        }
+                    }
+                    });
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "api/notJoin",
+                        data: {
+                            postId_give: _id,
+                            token: $.cookie('myToken')
+                        },
+                    success: function (response) {
+                        if (response['result'] == 'success') {
+                            alert('참여취소!')
+                            $('#join').val('참여하기')
+                            window.location.reload()
+                        }
+                    }
+                });
+                }
+            }
+
+            function likeCK() {
+                var token = $.cookie('myToken')
+                var _id = '{{article._id}}'
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/detail',
+                    data: {
+                        'postId_give': _id,
+                        'token': token
+                    },
+                    success: function (data) {
+                        if (data.result) {
+                            $('#likeBtn').val('좋아요 누른 상태')
+                        } else {
+                            $('#likeBtn').val('좋아요 안누른 상태')
+                        }
+                    }
+                });
+            }
+            likeCK()
+        </script>
+    </div>
+
 </body>
+
 </html>
