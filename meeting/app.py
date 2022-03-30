@@ -129,12 +129,12 @@ def read_articles():
     # 2. articles라는 키 값으로 article 정보 보내주기
     return jsonify({'result': 'success', 'articles': result})
 
-
 @app.route('/api/edit', methods=['GET'])
 def post_edited_article():
     postId_receive = request.args.get('postId_give')
     article = dbpost.articles.find_one({'_id': ObjectId(postId_receive)})
     return render_template('broad/edit.html', article = article)
+
 
 
 @app.route('/api/delete', methods=['POST'])
