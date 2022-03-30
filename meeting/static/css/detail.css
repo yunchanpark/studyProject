@@ -1,3 +1,52 @@
 .wrap {
     margin-top: 150px;
 }
+
+.detailContent {
+    position: relative;
+    margin: 0 auto;
+    width: 500px;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 30px;
+}
+
+.detailMenu {
+    margin: 7px 0;
+}
+
+.firstTd {
+    display: inline-block;
+    width: 60px;
+    font-weight: bold;
+}
+
+#detailTop {
+    margin-bottom: 20px;
+}
+
+#detailTitle {
+    display: inline-block;
+    font-weight: bold;
+}
+
+#likeWrap {
+    position: absolute;
+    right: 30px;
+}
+
+#likeBtn {
+    font-size: 30px;
+    cursor: pointer;
+}
+
+#likeCnt {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+#joinBtn {
+    text-align: right;
+    right: 0;
+    margin-top: 30px;
+}

@@ -35,11 +35,11 @@ def api_login():
         password_receive.encode('utf-8')).hexdigest()
     result = db.user.find_one(
         {'user_id': id_receive, 'password': password_hash})
-
     if result is not None:
         payload = {
             'id': id_receive,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60 * 60 * 24)
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60 * 60 * 24),
+            'name': result['name']
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -134,7 +134,7 @@ def create_article():
 
     article = {'uId': uid['id'], 'title': title_receive, 'intro': intro_receive, 'people': people_receive,
                 'sdate': sdate_receive, 'edate': edate_receive, 'fplace': fplace_receive,
-                'splace': splace_receive, 'desc': desc_receive, 'count': count_receive
+                'splace': splace_receive, 'desc': desc_receive, 'count': count_receive, 'likeCnt': 0
                 }
 
     # 3. mongoDB에 데이터를 넣기
@@ -233,11 +233,16 @@ def like():
         postId_receive = request.form['postId_give']
         token = request.form['token']
         uid = jwt.decode(token, SECRET_KEY, algorithms='HS256')
+        post = dbPost.articles.find_one({'_id': ObjectId(postId_receive)})
         if likeCheck(postId_receive, uid['id']):
             dbLike.like.insert_one({'post_id': postId_receive, 'member_id': uid['id']})
-            return jsonify({'result': True, 'msg': '좋아요'})
+            likeCount = int(post['likeCnt'])+1
+            dbPost.articles.update_one({'_id': ObjectId(postId_receive)}, {"$set": {'likeCnt': likeCount}})
+            return jsonify({'result': True, 'msg': '좋아요', 'likeCnt': likeCount})
+        likeCount = int(post['likeCnt'])-1
+        dbPost.articles.update_one({'_id': ObjectId(postId_receive)}, {"$set": {'likeCnt': likeCount}})
         dbLike.like.delete_one({'post_id': postId_receive, 'member_id': uid['id']})
-        return jsonify({'result': False, 'msg': '좋아요 취소'})
+        return jsonify({'result': False, 'msg': '좋아요 취소', 'likeCnt': likeCount})
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
         # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.

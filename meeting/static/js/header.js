@@ -2,7 +2,7 @@ $(document).ready(function () {
     let token = $.cookie('myToken');
     if (token !== undefined) {
         token = JSON.parse(atob(token.split('.')[1]));
-        $('#user_name').text(token.id + " 님")
+        $('#user_name').text(token.name + " 님")
     }
 });
 

@@ -12,10 +12,11 @@ function likeBtn(_id) {
         },
         success: function (data) {
             if(data.result) {
-                $('#likeBtn').val('좋아요 누른 상태')
+                $('#likeBtn').text('❤️')
             } else {
-                $('#likeBtn').val('좋아요 안누른 상태')
+                $('#likeBtn').text('🤍')
             }
+            $('#likeCnt').text(data.likeCnt)
         }
     });
 }
@@ -44,10 +45,11 @@ function join(_id) {
             }
 
             if (data.result) {
-                $('#join').val('참여하기 누른 상태')
+                $('#join').val('참여하기 취소')
             } else {
-                $('#join').val('참여하기 안누른 상태')
+                $('#join').val('참여하기')
             }
+            $('#peopleCnt').text(data.count)
         }
     });
 }

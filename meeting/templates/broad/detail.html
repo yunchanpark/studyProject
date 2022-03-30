@@ -13,16 +13,42 @@
 <body>
     <div class="wrap">
         {% include 'includes/header.html' %}
-        {{article}}
+        <div class="detailContent">
+            <div id="detailTop">
+                <h2 id="detailTitle">{{article.title}}</h2>
+                <span id="likeWrap">
+                    <span id="likeCnt">{{article.likeCnt}}</span>
+                    <span id="likeBtn" onclick="likeBtn('{{article._id}}')">
+                        🤍
+                    </span>
+                </span>
+            </div>
+            <div class="detailMenu">
+                <span class="firstTd">인원</span>
+                <span id="peopleCnt">{{article.count}}</span> / <span>{{article.people}}</span>
+            </div>
+            <div class="detailMenu">
+                <span class="firstTd">일정</span>
+                <span>{{article.sdate}}</span> ~ <span>{{article.edate}}</span>
+            </div>
+            <div class="detailMenu">
+                <span class="firstTd">소개</span>
+                <span>{{article.intro}}</span>
+            </div>
+            <div class="detailMenu">
+                <span class="firstTd">장소</span>
+                <span>{{article.fplace}}</span>
+            </div>
+            <div id="joinBtn">
+                <input id="join" class="btn btn-primary" type="button" onclick="join('{{article._id}}')" value="참여하기">
+                {% if article.people|int > article.count|int %}
+                <input id="joinCk" class="btn btn-success" disabled type="button" value="모집중">
+                {% else %}
+                <input id="joinCk" class="btn btn-secondary" disabled type="button" value="인원마감">
+                {% endif %}
+            </div>
+        </div>
         <br>
-        <input type="button" name="" id="likeBtn" value="좋아요" onclick="likeBtn('{{article._id}}')">
-        <input id="join" class="btn btn-primary" type="button" onclick="join('{{article._id}}')" value="참여하기">
-        {% if article.people|int > article.count|int %}
-        <input id="joinCk" class="btn btn-success" disabled type="button" value="모집중">
-        {% else %}
-        <input id="joinCk" class="btn btn-secondary" disabled type="button" value="인원마감">
-        {% endif %}
-        
         {% include 'includes/plugin.html'%}
         <script src="/static/js/detail.js"></script>
         {% if request.cookies.get('myToken') is not none %}
@@ -39,9 +65,9 @@
                     },
                     success: function (data) {
                         if (data.join) {
-                            $('#join').val('참여하기 누른 상태')
+                            $('#join').val('참여하기 취소')
                         } else {
-                            $('#join').val('참여하기 안누른 상태')
+                            $('#join').val('참여하기')
                         }
                     }
                 });
@@ -59,9 +85,9 @@
                     },
                     success: function (data) {
                         if (data.like) {
-                            $('#likeBtn').val('좋아요 누른 상태')
+                            $('#likeBtn').text('❤️')
                         } else {
-                            $('#likeBtn').val('좋아요 안누른 상태')
+                            $('#likeBtn').text('🤍')
                         }
                     }
                 });
