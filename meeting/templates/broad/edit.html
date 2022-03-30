@@ -1,87 +1,90 @@
 <html lang="en">
+{% include 'includes/head.html' %}
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css">
 
-<head>
-    {% include 'includes/head.html' %}
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- 구글폰트 -->
+<link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css">
+<title>모임 수정</title>
 
-    <!-- 구글폰트 -->
-    <link href="https://fonts.googleapis.com/css?family=Stylish&display=swap" rel="stylesheet">
+<!-- style -->
+<style type="text/css">
+    .wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 150px;
+    }
 
-    <title>Document</title>
-
-    <!-- style -->
-    <style type="text/css">
-        .wrap {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 150px;
-        }
-        #basic-addon1 {
-            width: 90.8px;
-        }
-    </style>
+    #basic-addon1 {
+        width: 90.8px;
+    }
+</style>
 </head>
 
 <body>
+    <div class="wrap">
         {% include 'includes/header.html' %}
-            <form action="" id="createForm">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+        <form action="" id="createForm">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">모임명</span>
-                    <input id="studyName" type="text" placeholder="15자 이내" style="width: 388px;" value="{{article.title}}">
-                    </div>
+                    <input id="studyName" type="text" placeholder="15자 이내" style="width: 388px;"
+                        value="{{article.title}}">
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">사진URL</span>
-                    <input id="image" type="text" placeholder="URL을 삽입해주세요" style="width: 388px;" value="{{article.image}}">
-                    </div>
+                    <input id="image" type="text" placeholder="URL을 삽입해주세요" style="width: 388px;"
+                        value="{{article.url}}">
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">모임소개</span>
-                    <input id="studyIntro" type="text" placeholder="50자 이내" style="width: 388px;" value="{{article.intro}}">
-                    </div>
+                    <input id="studyIntro" type="text" placeholder="50자 이내" style="width: 388px;"
+                        value="{{article.intro}}">
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">모집인원</span>
                     <input id="headCount" type="text" placeholder="" style="width: 388px;" value="{{article.people}}">
-                    </div>
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">진행기간</span>
-                    <input id="startDate" type="date" placeholder="시작일" style="width: 194px;" value="{{article.sdate}}"> <input id="endDate" type="date" placeholder="종료일" style="width: 194px;" value="{{article.edate}}">
-                    </div>
+                    <input id="startDate" type="date" placeholder="시작일" style="width: 194px;" value="{{article.sdate}}">
+                    <input id="endDate" type="date" placeholder="종료일" style="width: 194px;" value="{{article.edate}}">
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">장소</span>
-                    <input id="firstPlace" type="text" placeholder="어디서 만날까요?" style="width: 388px;" value="{{article.fplace}}">
-                    </div>
+                    <input id="firstPlace" type="text" placeholder="어디서 만날까요?" style="width: 388px;"
+                        value="{{article.fplace}}">
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1">상세설명</span>
-                    <textarea id="studyDesc" cols="30" rows="10" placeholder="내용을 입력해주세요" style="width: 388px;">{{article.desc}}</textarea>
-                    </div>
+                    <textarea id="studyDesc" cols="30" rows="10" placeholder="내용을 입력해주세요"
+                        style="width: 388px;">{{article.desc}}</textarea>
                 </div>
-                <div>
-                    <input class="btn btn-success" type="button" value="등록" onclick="postArticle()" style="width: 239.4px; background-color: #5F0080; color: white; border-color: #5F0080;">
-                    <input class="btn btn-danger" type="button" value="취소" onclick="goMain()" style="width: 239.4px; background-color: white; color:#5F0080; border-color: #5F0080;">
-                </div>
-            </form>
-        </div>
+            </div>
+            <div>
+                <input class="btn btn-success" type="button" value="수정" onclick="updateArticle('{{article._id}}')"
+                    style="width: 239.4px; background-color: #5F0080; color: white; border-color: #5F0080;">
+                <input class="btn btn-danger" type="button" value="취소" onclick="goMain()"
+                    style="width: 239.4px; background-color: white; color:#5F0080; border-color: #5F0080;">
+            </div>
+        </form>
+    </div>
     {% include 'includes/plugin.html'%}
     <script>
         function updateArticle(_id) {

@@ -133,7 +133,7 @@ def create_article():
     count_receive = request.form['count_give']
 
     article = {'uId': uid['id'], 'title': title_receive, 'intro': intro_receive, 'people': people_receive,
-                'sdate': sdate_receive, 'edate': edate_receive, 'fplace': fplace_receive,
+                'url': image_receive, 'sdate': sdate_receive, 'edate': edate_receive, 'fplace': fplace_receive,
                 'desc': desc_receive, 'count': count_receive, 'likeCnt': 0
                 }
 
