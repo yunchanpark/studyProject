@@ -128,8 +128,7 @@ def read_articles():
     # 2. articles라는 키 값으로 article 정보 보내주기
     return jsonify({'result': 'success', 'articles': result})
 
-
-@app.route('/api/edit', methods=['POST'])
+@app.route('/api/edited', methods=['POST'])
 def post_edited_article():
     # 1. 클라이언트로부터 데이터를 받기
     postId_receive = request.form['postId_give']
@@ -143,7 +142,6 @@ def post_edited_article():
     new_desc_receive = request.form['new_desc_give']
     dbpost.articles.update_one({'_id': ObjectId(postId_receive)}, {
                                '$set': {'title': newTitle_receive, 'content': newContent_receive}})
-
     return jsonify({'result': 'success'})
 
 

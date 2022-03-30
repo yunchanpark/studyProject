@@ -28,24 +28,6 @@
             showArticles();
         });
 
-        function editArticles(_id) {
-            $.ajax({
-                type: "POST",
-                url: "/api/edit",
-                data: {
-                    postId_give: _id
-                },
-                success: function (response) {
-                    if (response['result'] == 'success') {
-                        // 2. '삭제 완료!' 얼럿을 띄웁니다.
-                        alert('모임이 취소되었습니다!')
-                        // 3. 변경된 정보를 반영하기 위해 새로고침합니다.
-                        window.location.reload()
-                    }
-                }
-            });
-        }
-
         function showArticles() {
             $.ajax({
                 type: "GET",
@@ -55,23 +37,24 @@
                     let articles = response["articles"];
                     for (let i = 0; i < articles.length; i++) {
                         makeCard(articles[i]["_id"], articles[i]["title"], articles[i]["intro"], articles[i]
-                            ["uId"])
+                            ["uId"], articles[i]["sdate"], articles[i]["edate"])
                     }
                 }
             })
         }
 
-        function makeCard(_id, title, intro, uId) {
+        function makeCard(_id, title, intro, uId, sdate, edate) {
             let token = $.cookie('myToken')
-
+            console.log(sdate)
             let temp_html = `<div class="card" id="${_id}">
                 <div class="card-body card-body${_id}">
                     <h4 class="card-title">${title}</h4>
                     <p class="card-text">${intro}</p>
+                    <p class = "badge bg-success">${sdate}</p>
                 </div>
             </div>`;
             $("#card-list").append(temp_html);
-
+            
             if (token !== undefined) {
                 token = JSON.parse(atob(token.split('.')[1]))
                 if (token.id == uId) {
