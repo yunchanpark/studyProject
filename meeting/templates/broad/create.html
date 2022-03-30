@@ -20,78 +20,81 @@
     <!-- style -->
     <style type="text/css">
         .wrap {
-            margin: 120px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 150px;
         }
-
-        .top-of-page h2,
-        .top-of-page a {
-            display: inline;
-        }
-
-        .login {
-            float: right;
-        }
-
-        .top-of-page a {
-            text-decoration-line: none;
-        }
-
-        #image_container>img {
-            width: 150px;
-            height: 150px;
+        #basic-addon1 {
+            width: 90.8px;
         }
     </style>
 </head>
 
 <body>
-    {% include 'includes/header.html' %}
     <div class="wrap">
+    {% include 'includes/header.html' %}
         <form action="" id="createForm">
-            <div>모임 이름</div>
-            <input id="studyName" type="text" placeholder="15자 이내">
-            <div>모임 사진</div>
-            <input id="image" type="file" accept="image/*" onchange="setThumbnail(event);">
-            <div id="image_container"></div>
-            <div>모임 소개</div>
-            <input id="studyIntro" type="text" placeholder="50자 이내">
-            <div>인원</div>
-            <input id="headCount" type="text" placeholder="00명">
-            <div>진행 기간</div>
-            <input id="startDate" type="date" placeholder="시작일"> <input id="endDate" type="date" placeholder="종료일">
-            <div>위치</div>
-            <input id="firstPlace" type="text" placeholder="주소 입력">
-            <input id="secondPlace" type="text" placeholder="상세주소 입력">
-            <div>상세설명</div>
-            <textarea id="studyDesc" cols="30" rows="10" placeholder="내용을 입력해주세요"></textarea>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">모임명</span>
+                <input id="studyName" type="text" placeholder="15자 이내" style="width: 388px;">
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">사진URL</span>
+                <input id="image" type="text" placeholder="URL을 삽입해주세요" style="width: 388px;">
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">모임소개</span>
+                <input id="studyIntro" type="text" placeholder="50자 이내" style="width: 388px;">
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">모집인원</span>
+                <input id="headCount" type="text" placeholder="" style="width: 388px;">
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">진행기간</span>
+                <input id="startDate" type="date" placeholder="시작일" style="width: 194px;"> <input id="endDate" type="date" placeholder="종료일" style="width: 194px;">
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">장소</span>
+                <input id="firstPlace" type="text" placeholder="어디서 만날까요?" style="width: 388px;">
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">상세설명</span>
+                <textarea id="studyDesc" cols="30" rows="10" placeholder="내용을 입력해주세요" style="width: 388px;"></textarea>
+                </div>
+            </div>
             <div>
-                <input class="btn btn-success" type="button" value="등록" onclick="postArticle()">
-                <button class="btn btn-danger" onclick="goMain()">취소</button>
+                <input class="btn btn-success" type="button" value="등록" onclick="postArticle()" style="width: 239.4px; background-color: #5F0080; color: white; border-color: #5F0080;">
+                <input class="btn btn-danger" type="button" value="취소" onclick="goMain()" style="width: 239.4px; background-color: white; color:#5F0080; border-color: #5F0080;">
             </div>
         </form>
     </div>
     {% include 'includes/plugin.html'%}
     <script>
-        function setThumbnail(event) {
-            var reader = new FileReader();
-
-            reader.onload = function (event) {
-                var img = document.createElement("img");
-                img.setAttribute("src", event.target.result);
-                document.querySelector("div#image_container").appendChild(img);
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
         function postArticle() {
             // 1. 유저가 입력한 데이터를 #memo-title과 #memo-content에서 가져오기
             let userId = $.cookie('myToken');
             let title = $("#studyName").val();
+            let image = $("#image").val();
             let intro = $("#studyIntro").val();
             let people = $("#headCount").val();
             let sdate = $("#startDate").val();
             let edate = $("#endDate").val();
             let fplace = $("#firstPlace").val();
-            let splace = $("#secondPlace").val();
             let desc = $("#studyDesc").val();
             let count = 0
             var formData = $('#createForm').serialize()
@@ -102,13 +105,13 @@
                 url: "/api/create", // /memo라는 url에 요청하겠다.
                 data: {
                     uId_give: userId,
+                    image_give: image,
                     title_give: title,
                     intro_give: intro,
                     people_give: people,
                     sdate_give: sdate,
                     edate_give: edate,
                     fplace_give: fplace,
-                    splace_give: splace,
                     desc_give: desc,
                     count_give: count
                 }, // 데이터를 주는 방법
