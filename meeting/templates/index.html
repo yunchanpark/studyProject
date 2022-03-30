@@ -60,33 +60,21 @@
             showArticles();
         });
 
-        // function deleteArticle(_id) {
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "/api/delete",
-        //         data: {postId_give: _id},
-        //         success: function (response) {
-        //             if (response['result'] == 'success') {
-        //                 // 2. '삭제 완료!' 얼럿을 띄웁니다.
-        //                 alert('삭제 완료!')
-        //                 // 3. 변경된 정보를 반영하기 위해 새로고침합니다.
-        //                 window.location.reload()
-        //             }
-        //         }
-        //     });
-        // }
-        // // html을 대체하기
-        // function editArticle(_id, title, content) {
-        //     $(`#${_id}`).html(`<div class="card-body">
-        //             <div class="form-group">
-        //                 <input type="text" id="new-title" class="form-control" value="${title}">
-        //             </div>
-        //             <div class="form-group">
-        //                 <textarea id="new-text" class="form-control" placeholder="" rows="2">${content}</textarea>
-        //             </div>
-        //             <button type="button" class="btn btn-primary" onclick="postEditArticle('${_id}')">저장</button>
-        //         </div>`);
-        // }
+        function editArticles(_id) {
+            $.ajax({
+                type: "POST",
+                url: "/api/edit",
+                data: {postId_give: _id},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        // 2. '삭제 완료!' 얼럿을 띄웁니다.
+                        alert('모임이 취소되었습니다!')
+                        // 3. 변경된 정보를 반영하기 위해 새로고침합니다.
+                        window.location.reload()
+                    }
+                }
+            });
+        }
 
         function showArticles() {
             $.ajax({
@@ -103,15 +91,43 @@
         }
 
         function makeCard(_id, title, intro) {
-            let temp_html = `<div class="card" id="${_id}">
-                <div class="card-body">
-                    <h4 class="card-title">${title}</h4>
-                    <p class="card-text">${intro}</p>
-                    <button type="button" class="btn btn-secondary" onclick="editArticle('${_id}, ${title}', '${intro}')">수정</button>
-                    <button type="button" class="btn btn-dark" onclick="deleteArticle('${_id}')">삭제</button>
-                </div>
-            </div>`;
-            $("#card-list").append(temp_html);
+            let token = $.cookie('myToken')
+            console.log(token)
+            if (token !== undefined) {
+                let temp_html = `<div class="card" id="${_id}">
+                    <div class="card-body">
+                        <h4 class="card-title">${title}</h4>
+                        <p class="card-text">${intro}</p>
+                        <button type="button" class="btn btn-secondary" onclick="editArticle('${_id}, ${title}', '${intro}')">수정</button>
+                        <button type="button" class="btn btn-dark" onclick="deleteArticle('${_id}')">삭제</button>
+                    </div>
+                </div>`;
+                $("#card-list").append(temp_html);
+            } else {
+                let temp_html = `<div class="card" id="${_id}">
+                    <div class="card-body">
+                        <h4 class="card-title">${title}</h4>
+                        <p class="card-text">${intro}</p>
+                    </div>
+                </div>`;
+                $("#card-list").append(temp_html);
+            }
+        }
+
+        function deleteArticle(_id) {
+            $.ajax({
+                type: "POST",
+                url: "/api/delete",
+                data: {postId_give: _id},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        // 2. '삭제 완료!' 얼럿을 띄웁니다.
+                        alert('모임이 취소되었습니다!')
+                        // 3. 변경된 정보를 반영하기 위해 새로고침합니다.
+                        window.location.reload()
+                    }
+                }
+            });
         }
 
         function goCreate() {

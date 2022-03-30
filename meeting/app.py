@@ -1,3 +1,4 @@
+from re import A
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 import jwt
 import hashlib
@@ -80,6 +81,8 @@ def create():
 @app.route('/api/create', methods=['POST'])
 def create_article():
     # 1. 클라이언트로부터 데이터를 받기
+    uId_receive = request.form['uId_give']
+    uid = jwt.decode(uId_receive, SECRET_KEY, algorithms='HS256')
     title_receive = request.form['title_give'] 
     intro_receive = request.form['intro_give'] 
     people_receive = request.form['people_give']
@@ -89,7 +92,7 @@ def create_article():
     splace_receive = request.form['splace_give']
     desc_receive = request.form['desc_give']
 
-    article = {'title': title_receive, 'intro': intro_receive, 'people': people_receive, 'sdate': sdate_receive, 'edate': edate_receive, 'fpalce': fplace_receive, 'splace': splace_receive, 'desc': desc_receive}
+    article = {'uId': uid['id'], 'title': title_receive, 'intro': intro_receive, 'people': people_receive, 'sdate': sdate_receive, 'edate': edate_receive, 'fpalce': fplace_receive, 'splace': splace_receive, 'desc': desc_receive}
     
     # 3. mongoDB에 데이터를 넣기
     dbpost.articles.insert_one(article)
@@ -106,6 +109,29 @@ def read_articles():
         result.append(document)
     # 2. articles라는 키 값으로 article 정보 보내주기
     return jsonify({'result': 'success', 'articles': result})
-    
+
+@app.route('/api/edit', methods=['POST'])
+def post_edited_article():
+    # 1. 클라이언트로부터 데이터를 받기
+    postId_receive = request.form['postId_give']
+    new_title_receive = request.form['new_title_give']
+    new_intro_receive = request.form['new_intro_give']
+    new_people_receive = request.form['new_people_give']
+    new_sdate_receive = request.form['new_sdate_give']
+    new_edate_receive = request.form['new_edate_give']
+    new_fplace_receive = request.form['new_fplace_give']
+    new_splace_receive = request.form['new_splace_give']
+    new_desc_receive = request.form['new_desc_give']
+    dbpost.articles.update_one({'_id': ObjectId(postId_receive)}, {'$set': {'title': newTitle_receive, 'content': newContent_receive}})
+
+    return jsonify({'result': 'success'})
+
+@app.route('/api/delete', methods=['POST'])
+def delete_article():
+    postId_receive = request.form['postId_give']
+    dbpost.articles.delete_one({'_id': ObjectId(postId_receive)})
+    # 3. 성공하면 success 메시지를 반환합니다.
+    return jsonify({'result': 'success'})
+
 if __name__ == '__main__':
     app.run(debug=True)
