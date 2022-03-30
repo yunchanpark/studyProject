@@ -7,6 +7,7 @@ from bson.objectid import ObjectId
 client = MongoClient('localhost', 27017)
 db = client.dbMember
 dbPost = client.dbPost
+dbLike = client.dbLike
 
 
 SECRET_KEY = 'HelloFlask'
@@ -85,6 +86,24 @@ def detail():
     article = dbPost.articles.find_one({'_id': ObjectId(postId_receive)})
     return render_template('broad/detail.html', article = article)
 
+
+@app.route('/api/detail', methods=['POST'])
+def detailPost():
+    try:
+        postId_receive = request.form['postId_give']
+        token = request.form['token']
+        uid = jwt.decode(token, SECRET_KEY, algorithms='HS256')
+        if likeCheck(postId_receive, uid['id']):
+            return jsonify({'result': False})
+        return jsonify({'result': True})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+        
+    
+
 # 모임 생성
 @app.route('/create')
 def create():
@@ -160,6 +179,30 @@ def delete_article():
         # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
+# 좋아요
+def likeCheck(_id, uid):
+    if dbLike.like.find_one({'post_id': _id, 'member_id': uid}):
+        return False
+    return True
+    
+@app.route('/api/like', methods=['POST'])
+def like():
+    try:
+        postId_receive = request.form['postId_give']
+        token = request.form['token']
+        uid = jwt.decode(token, SECRET_KEY, algorithms='HS256')
+        if likeCheck(postId_receive, uid['id']):
+            dbLike.like.insert_one({'post_id': postId_receive, 'member_id': uid['id']})
+            return jsonify({'result': True, 'msg': '좋아요'})
+        dbLike.like.delete_one({'post_id': postId_receive, 'member_id': uid['id']})
+        return jsonify({'result': False, 'msg': '좋아요 취소'})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

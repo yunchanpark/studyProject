@@ -1,12 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>상세 페이지</title>
+{% include 'includes/head.html' %}
+<link rel="stylesheet" href="/static/css/detail.css">
+<title>상세 페이지</title>
 </head>
+
 <body>
-    {{article}}
+    <div class="wrap">
+        {% include 'includes/header.html' %}
+        {{article}}
+        <br>
+        <input type="button" name="" id="likeBtn" value="좋아요" onclick="likeBtn('{{article._id}}')">
+        <input type="button" name="" id="joinBtn" value="참여하기">
+        {% include 'includes/plugin.html'%}
+        <script src="/static/js/detail.js"></script>
+        <script>
+            function likeCK() {
+                var token = $.cookie('myToken')
+                var _id = '{{article._id}}'
+                $.ajax({
+                    type: 'POST',
+                    url: '/api/detail',
+                    data: {
+                        'postId_give': _id,
+                        'token': token
+                    },
+                    success: function (data) {
+                        if (data.result) {
+                            $('#likeBtn').val('좋아요 누른 상태')
+                        } else {
+                            $('#likeBtn').val('좋아요 안누른 상태')
+                        }
+                    }
+                });
+            }
+            likeCK()
+        </script>
+    </div>
 </body>
+
 </html>
