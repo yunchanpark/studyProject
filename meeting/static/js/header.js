@@ -12,4 +12,5 @@ function logout() {
     });
     location.reload();
     window.location.href = '/home'
+    alert('로그아웃 하셨습니다!')
 }
