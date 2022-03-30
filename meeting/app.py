@@ -8,6 +8,7 @@ client = MongoClient('localhost', 27017)
 db = client.dbMember
 dbPost = client.dbPost
 dbLike = client.dbLike
+dbJoin = client.dbJoin
 
 
 SECRET_KEY = 'HelloFlask'
@@ -93,9 +94,16 @@ def detailPost():
         postId_receive = request.form['postId_give']
         token = request.form['token']
         uid = jwt.decode(token, SECRET_KEY, algorithms='HS256')
+        temp = {}
         if likeCheck(postId_receive, uid['id']):
-            return jsonify({'result': False})
-        return jsonify({'result': True})
+            temp['like'] = False
+        else:
+            temp['like'] = True
+        if joinCheck(postId_receive, uid['id']):
+            temp['join'] = False
+        else:
+            temp['join'] = True
+        return jsonify(temp)
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
         # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
@@ -182,24 +190,36 @@ def delete_article():
     except jwt.exceptions.DecodeError:
         return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
+# 참여하기
+def joinCheck(_id, uid):
+    if dbJoin.join.find_one({'post_id': _id, 'member_id': uid}):
+        return False
+    return True
 
 @app.route('/api/join', methods=['POST'])
 def join():
-    postId_receive = request.form['postId_give']
-    post = dbPost.articles.find_one({'_id': ObjectId(postId_receive)})
-    newCount = int(post['count'])+1
-    dbPost.articles.update_one({'_id': ObjectId(postId_receive)}, {"$set": {'count': newCount}})
-
-    return jsonify({'result': 'success'})
-
-@app.route('/api/notJoin', methods=['POST'])
-def notJoin():
-    postId_receive = request.form['postId_give']
-    post = dbPost.articles.find_one({'_id': ObjectId(postId_receive)})
-    newCount = int(post['count']) - 1
-    dbPost.articles.update_one({'_id': ObjectId(postId_receive)}, {"$set": {'count': newCount}})
-
-    return jsonify({'result': 'success'})
+    try:
+        postId_receive = request.form['postId_give']
+        token = request.form['token']
+        uid = jwt.decode(token, SECRET_KEY, algorithms='HS256')
+        post = dbPost.articles.find_one({'_id': ObjectId(postId_receive)})
+        if joinCheck(postId_receive, uid['id']):
+            if int(post['people']) > int(post['count']):
+                dbJoin.join.insert_one({'post_id': postId_receive, 'member_id': uid['id']})
+                newCount = int(post['count'])+1
+                dbPost.articles.update_one({'_id': ObjectId(postId_receive)}, {"$set": {'count': newCount}})
+            return jsonify({'result': True, 'msg': '참여하기', 'people': post['people'], 'count': newCount})
+        if int(post['count']) > 0:
+            dbJoin.join.delete_one(
+                {'post_id': postId_receive, 'member_id': uid['id']})
+            newCount = int(post['count']) - 1
+            dbPost.articles.update_one({'_id': ObjectId(postId_receive)}, {"$set": {'count': newCount}})
+        return jsonify({'result': False, 'msg': '참여하기 취소', 'people': post['people'], 'count': newCount})
+    except jwt.ExpiredSignatureError:
+        return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
+        # 만약 해당 token이 올바르게 디코딩되지 않는다면, 아래와 같은 코드를 실행합니다.
+    except jwt.exceptions.DecodeError:
+        return redirect(url_for("login", msg="로그인 정보가 존재하지 않습니다."))
 
 # 좋아요
 def likeCheck(_id, uid):
