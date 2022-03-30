@@ -19,7 +19,9 @@
             {% for item in articles %}
             <div class="card" id="{{item._id}}">
                 <div class="card-body card-body{{item._id}}">
-                    <h4 class="card-title">{{item.title}}</h4>
+                    <a href="/api/detail?postId_give={{item._id}}">
+                        <h4 class="card-title">{{item.title}}</h4>
+                    </a>
                     <p class="card-text">{{item.intro}}</p>
                 </div>
             </div>

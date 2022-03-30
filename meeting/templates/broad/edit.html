@@ -56,14 +56,15 @@
         <div>인원</div>
         <input id="headCount" type="text" placeholder="00명" value="{{article.people}}">
         <div>진행 기간</div>
-        <input id="startDate" type="date" placeholder="시작일"> <input id="endDate" type="date" placeholder="종료일">
+        <input id="startDate" type="date" placeholder="시작일" value="{{article.sdate}}">
+        <input id="endDate" type="date" placeholder="종료일" value="{{article.edate}}">
         <div>위치</div>
         <input id="firstPlace" type="text" placeholder="주소 입력" value="{{article.fpalce}}">
         <input id="secondPlace" type="text" placeholder="상세주소 입력" value="{{article.splace}}">
         <div>상세설명</div>
-        <textarea id="studyDesc" cols="30" rows="10" placeholder="내용을 입력해주세요"></textarea>
+        <textarea id="studyDesc" cols="30" rows="10" placeholder="내용을 입력해주세요">{{article.desc}}</textarea>
         <div>
-            <input class="btn btn-success" type="submit" value="등록" onclick="postArticle()">
+            <input class="btn btn-success" type="submit" value="수정" onclick="updateArticle('{{article._id}}')">
             <button class="btn btn-danger" onclick="goMain()">취소</button>
         </div>
     </div>
@@ -78,6 +79,45 @@
                 document.querySelector("div#image_container").appendChild(img);
             };
             reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function updateArticle(_id) {
+            let userId = $.cookie('myToken');
+            let title = $("#studyName").val();
+            let intro = $("#studyIntro").val();
+            let people = $("#headCount").val();
+            let sdate = $("#startDate").val();
+            let edate = $("#endDate").val();
+            let fplace = $("#firstPlace").val();
+            let splace = $("#secondPlace").val();
+            let desc = $("#studyDesc").val();
+
+            // 2. memo에 POST 방식으로 메모 생성 요청하기
+            $.ajax({
+                type: "POST", // POST 방식으로 요청하겠다.
+                url: "/api/update", // /memo라는 url에 요청하겠다.
+                data: {
+                    postId_give: _id,
+                    uId_give: userId,
+                    title_give: title,
+                    intro_give: intro,
+                    people_give: people,
+                    sdate_give: sdate,
+                    edate_give: edate,
+                    fplace_give: fplace,
+                    splace_give: splace,
+                    desc_give: desc
+                }, // 데이터를 주는 방법
+                success: function (response) { // 성공하면
+                    if (response["result"] == "success") {
+                        alert("수정 완료!");
+                        // 3. 성공 시 페이지 새로고침하기
+                        goMain()
+                    } else {
+                        alert("서버 오류!")
+                    }
+                }
+            })
         }
     </script>
 </body>
