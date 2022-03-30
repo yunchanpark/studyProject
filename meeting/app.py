@@ -186,10 +186,18 @@ def delete_article():
 @app.route('/api/join', methods=['POST'])
 def join():
     postId_receive = request.form['postId_give']
-    uId_receive = request.form['uId_give']
-    uid = jwt.decode(uId_receive, SECRET_KEY, algorithms='HS256')
+    post = dbPost.articles.find_one({'_id': ObjectId(postId_receive)})
+    newCount = int(post['count'])+1
+    dbPost.articles.update_one({'_id': ObjectId(postId_receive)}, {"$set": {'count': newCount}})
 
-    #dbPost.articles.update_one({'_id': ObjectId(postId_receive), 'uId': uid['id']}, {"$set": {'count' +=}})
+    return jsonify({'result': 'success'})
+
+@app.route('/api/notJoin', methods=['POST'])
+def notJoin():
+    postId_receive = request.form['postId_give']
+    post = dbPost.articles.find_one({'_id': ObjectId(postId_receive)})
+    newCount = int(post['count']) - 1
+    dbPost.articles.update_one({'_id': ObjectId(postId_receive)}, {"$set": {'count': newCount}})
 
     return jsonify({'result': 'success'})
 

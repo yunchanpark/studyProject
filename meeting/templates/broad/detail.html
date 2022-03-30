@@ -24,43 +24,41 @@ integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2
         {% include 'includes/plugin.html'%}
         <script src="/static/js/detail.js"></script>
         <script>
-            function join(_id) {
+            function join() {
+                var _id = '{{article._id}}'
                 let status = $('#join').val()
                 if (status == '참여하기') {
                     $.ajax({
                         type: "POST",
-                        url: "api/join",
+                        url: "/api/join",
                         data: {
-                            postId_give: _id,
-                            token: $.cookie('myToken')
+                            'postId_give': _id,
                         },
                     success: function (response) {
                         if (response['result'] == 'success') {
                             alert('참여완료!')
                             $('#join').val('참여중')
-                            window.location.reload()
+                            // window.location.reload()
                         }
                     }
                     });
                 } else {
                     $.ajax({
                         type: "POST",
-                        url: "api/notJoin",
+                        url: "/api/notJoin",
                         data: {
-                            postId_give: _id,
-                            token: $.cookie('myToken')
+                            'postId_give': _id,
                         },
                     success: function (response) {
                         if (response['result'] == 'success') {
                             alert('참여취소!')
                             $('#join').val('참여하기')
-                            window.location.reload()
+                            //window.location.reload()
+                            }
                         }
-                    }
-                });
+                    });
                 }
             }
-
             function likeCK() {
                 var token = $.cookie('myToken')
                 var _id = '{{article._id}}'
