@@ -23,6 +23,7 @@ integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2
         {% endif %}
         {% include 'includes/plugin.html'%}
         <script src="/static/js/detail.js"></script>
+        {% if request.cookies.get('myToken') is not none %}
         <script>
             function join() {
                 var _id = '{{article._id}}'
@@ -80,6 +81,7 @@ integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2
             }
             likeCK()
         </script>
+        {% endif %}
     </div>
 
 </body>

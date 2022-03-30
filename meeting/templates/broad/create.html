@@ -96,7 +96,6 @@
             let count = 0
             var formData = $('#createForm').serialize()
 
-            console.log(formData)
             // 2. memo에 POST 방식으로 메모 생성 요청하기
             $.ajax({
                 type: "POST", // POST 방식으로 요청하겠다.
@@ -114,7 +113,6 @@
                     count_give: count
                 }, // 데이터를 주는 방법
                 success: function (response) { // 성공하면
-                    console.log(response)
                     if (response["result"] == "success") {
                         alert("생성 완료!");
                         // 3. 성공 시 페이지 새로고침하기
