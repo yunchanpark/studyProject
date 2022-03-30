@@ -25,6 +25,7 @@
                     <p class="card-text">{{item.intro}}</p>
                 </div>
             </div>
+            {% if request.cookies.get('myToken') is not none %}
             <script>
                 var token = $.cookie('myToken')
                 var uId = "{{item.uId}}"
@@ -38,6 +39,7 @@
                     $(`.card-body{{item._id}}`).append(temp_html);
                 }
             </script>
+            {% endif %}
             {% endfor %}
             <script>
                 function deleteArticle(_id) {

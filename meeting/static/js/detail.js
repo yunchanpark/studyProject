@@ -1,6 +1,8 @@
 function likeBtn(_id) {
     var token = $.cookie('myToken')
-    console.log(_id, token)
+    if (!token) {
+        return
+    }
     $.ajax({
         type: 'POST',
         url: '/api/like',
