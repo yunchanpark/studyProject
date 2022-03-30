@@ -75,16 +75,6 @@
     cursor: pointer;
 }
 
-#pw_icon,
-#pw_msg,
-#pw_icon_two,
-#pw_msg_two,
-#pw_ck_icon,
-#pw_ck_msg {
-    font-size: 12px;
-    display: none;
-}
-
 #memberForm {
     width: 100%;
     margin-top: 150px;
@@ -182,4 +172,22 @@ button {
 
 #register_btn {
     height: 200px;
+}
+
+.ok_check {
+    display: none;
+}
+
+#pw_icon,
+#pw_msg,
+#pw_icon_two,
+#pw_msg_two,
+#pw_ck_icon,
+#pw_ck_msg {
+    font-size: 12px;
+    display: none;
+}
+
+#female {
+    margin-left: 20px;
 }
