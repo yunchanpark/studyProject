@@ -15,38 +15,7 @@
     {% include 'includes/header.html' %}
     <div class="wrap">
         <div id="card-list" class="card-columns">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">첫번째 제목을 수정합니다.</h4>
-                    <p class="card-text">첫번째 내용을 수정합니다.</p>
-                    <button type="button" class="btn btn-secondary">수정</button>
-                    <button type="button" class="btn btn-dark">삭제</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">두번째 제목을 수정합니다.</h4>
-                    <p class="card-text">두번째 내용을 수정합니다.</p>
-                    <button type="button" class="btn btn-secondary">수정</button>
-                    <button type="button" class="btn btn-dark">삭제</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">세번째 제목을 수정합니다.</h4>
-                    <p class="card-text">세번째 내용을 수정합니다.</p>
-                    <button type="button" class="btn btn-secondary">수정</button>
-                    <button type="button" class="btn btn-dark">삭제</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">세번째 제목을 수정합니다.</h4>
-                    <p class="card-text">세번째 내용을 수정합니다.</p>
-                    <button type="button" class="btn btn-secondary">수정</button>
-                    <button type="button" class="btn btn-dark">삭제</button>
-                </div>
-            </div>
+ 
         </div>
     </div>
     <div class= "createmoim">
@@ -84,15 +53,16 @@
                 success: function (response) {
                     let articles = response["articles"];
                     for (let i = 0; i < articles.length; i++) {
-                        makeCard(articles[i]["_id"], articles[i]["title"], articles[i]["intro"])
+                        makeCard(articles[i]["_id"], articles[i]["title"], articles[i]["intro"], articles[i]["uId"])
                     }
                 }
             })
         }
 
-        function makeCard(_id, title, intro) {
+        function makeCard(_id, title, intro, uId) {
             let token = $.cookie('myToken')
             console.log(token)
+
             if (token !== undefined) {
                 let temp_html = `<div class="card" id="${_id}">
                     <div class="card-body">
