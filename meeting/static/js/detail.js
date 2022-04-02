@@ -42,13 +42,13 @@ function join(_id) {
                 $('#joinCk').val('모집중')
                 $('#joinCk').removeClass('btn-secondary')
                 $('#joinCk').addClass('btn-success')
+                if (data.result) {
+                    $('#join').val('참여하기 취소')
+                } else {
+                    $('#join').val('참여하기')
+                }
             }
 
-            if (data.result) {
-                $('#join').val('참여하기 취소')
-            } else {
-                $('#join').val('참여하기')
-            }
             $('#peopleCnt').text(data.count)
         }
     });

@@ -202,16 +202,17 @@ def join():
         token = request.form['token']
         uid = jwt.decode(token, SECRET_KEY, algorithms='HS256')
         post = dbPost.articles.find_one({'_id': ObjectId(postId_receive)})
+        newCount = int(post['count'])
         if joinCheck(postId_receive, uid['id']):
             if int(post['people']) > int(post['count']):
                 dbJoin.join.insert_one({'post_id': postId_receive, 'member_id': uid['id']})
-                newCount = int(post['count'])+1
+                newCount = newCount+1
                 dbPost.articles.update_one({'_id': ObjectId(postId_receive)}, {"$set": {'count': newCount}})
             return jsonify({'result': True, 'msg': '참여하기', 'people': post['people'], 'count': newCount})
         if int(post['count']) > 0:
             dbJoin.join.delete_one(
                 {'post_id': postId_receive, 'member_id': uid['id']})
-            newCount = int(post['count']) - 1
+            newCount = newCount - 1
             dbPost.articles.update_one({'_id': ObjectId(postId_receive)}, {"$set": {'count': newCount}})
         return jsonify({'result': False, 'msg': '참여하기 취소', 'people': post['people'], 'count': newCount})
     except jwt.ExpiredSignatureError:
